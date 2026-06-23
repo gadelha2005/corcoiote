@@ -1,5 +1,5 @@
 import http from "node:http";
 
 http
-	.createServer(() => console.log("knocked on the door!"))
+	.createServer(() => console.log("Olá, mundo!"))
 	.listen(Number(process.env.PORT));
