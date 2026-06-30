@@ -1,29 +1,16 @@
-import http from "node:http";
+import express from "express";
+import CustomerRouter from "./routes/customer.router.ts";
 
-const users = [
-	{
-		name: "Pedro",
-		status: true,
-	},
-	{
-		name: "Tiken",
-		status: false,
-	},
-	{
-		name: "Tiago",
-		status: true,
-	},
-];
+const app = express();
 
-http
-	.createServer((request, response) => {
-		if (request.url === "/users" && request.method === "GET") {
-			response.writeHead(200, { "content-type": "application/json" });
-			response.end(JSON.stringify(users));
-			return;
-		}
+app.use(express.json());
 
-		response.writeHead(404, { "content-type": "text/plain" });
-		response.end("Not Found!");
-	})
-	.listen(Number(process.env.PORT));
+app.use("/customers", CustomerRouter);
+
+app.use((_request, response) => {
+	response.status(404).json({
+		message: "Not found!",
+	});
+});
+
+app.listen(Number(process.env.PORT));
